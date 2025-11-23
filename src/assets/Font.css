@@ -1,0 +1,7 @@
+@font-face {
+  font-family: 'MainFont';
+  src: url('./Font.ttf') format('truetype');
+  font-weight: 40; /* normal */
+  font-style: normal;
+  font-display: swap;
+}
