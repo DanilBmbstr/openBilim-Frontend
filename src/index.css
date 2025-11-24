@@ -5,6 +5,13 @@ body {
   font-family: 'MainFont', sans-serif;
 }
 
+.content{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
