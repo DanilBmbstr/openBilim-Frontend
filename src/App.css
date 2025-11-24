@@ -8,7 +8,15 @@
 
 
 
+.mainPageContent{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
 
+.errorMessage{
+   color: red;
+}
 
 button{
     transition: background-color, 0.5s;
