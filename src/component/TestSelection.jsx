@@ -65,7 +65,7 @@ setTestsList(JSON.parse(xhr.responseText).tests)
 
     return (
         <div style={back}>
-           <h2 style={textStyle} >Выберите тест</h2>
+           <h3 style={textStyle} >Выберите тест</h3>
 
    {testsList.map((test) => {return <TestChoise onClick = {onChoose} testId = {test.test_id} key={test.test_id} name={test.testName} subject={test.subject}></TestChoise>})}
 

@@ -6,6 +6,7 @@ import Component from './component/Component' // Правильный импор
 import Header from './component/Header'
 import Login from './component/Login'
 import TestSelection from './component/TestSelection'
+import Testing from './component/Testing'
 function App() {
 
 
@@ -16,8 +17,11 @@ function App() {
   const[tokenState, setTokenState] = useState("")
   const [name, setName] = useState("")
   const [group, setGroup] = useState("")
+    const [subject, setSubject] = useState("")
+  const [testName, setTestName] = useState("")
   const [error, setError] = useState("")
   const [screen, setScreen] = useState("auth")
+  const [sessionId, setSessionId] = useState("")
 
 
   const xhr = new XMLHttpRequest();
@@ -65,10 +69,13 @@ function App() {
           xhr.onload = function() {
       if (xhr.status === 200) {
         if(xhr.responseText == "Error: This user has unfinished session") {setError("Вы уже проходите тестирование");
-
+          
           return;
         }
+        setSessionId(JSON.parse(xhr.responseText).session_id);
 setScreen("test");
+setTestName(JSON.parse(xhr.responseText).testName);
+setSubject(JSON.parse(xhr.responseText).subject);
       }}
       xhr.send(JSON.stringify({
 
@@ -84,7 +91,7 @@ if(screen == "auth"){
   return (
     <>
 
-      <Header name={name} group={group} discipline="Дисциплина" testName="Название теста" />
+      <Header name={name} group={group} discipline={subject} testName={testName} />
       <div className="content">
 <div className="mainPageContent">
         <Login onClick={authorization}></Login>
@@ -101,7 +108,7 @@ else if(screen == "testSelection")
   return (
     <>
 
-      <Header name={name} group={group} discipline="Дисциплина" testName="Название теста" />
+      <Header name={name} group={group} discipline={subject} testName={testName} />
       <div className="content">
 <div className="mainPageContent">
         <TestSelection onChoose = {startTest} url = {url}token = {tokenState}></TestSelection>
@@ -113,6 +120,21 @@ else if(screen == "testSelection")
 
     </>
   )
+}
+
+else if(screen == "test"){
+  return <>
+   <Header name={name} group={group} discipline={subject} testName={testName} />
+      <div className="content">
+<div className="mainPageContent">
+        <Testing sessionId = {sessionId} url = {url}token = {tokenState}></Testing>
+<br />
+        
+        <p className="errorMessage">{error}</p>
+</div>
+      </div>
+
+  </>
 }
 
 }
