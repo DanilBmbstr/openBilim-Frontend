@@ -1,6 +1,7 @@
 import Logo from './../assets/Logo.svg'
 import React, { useState } from 'react';
 import TestChoise from './TestChoise';
+import { useEffect } from 'react';
 var testsLoaded = false;
 export default function TestSelection(props) {
 
@@ -9,7 +10,10 @@ const [password, setPassword] = useState("");
 const [testsList, setTestsList] = useState([]);
 
   const xhr = new XMLHttpRequest();
+    useEffect(() => {
+        getTestsList(props.token)
 
+    }, []); 
 function getTestsList(token){
     xhr.open('POST', props.url + '/getAvailableTests');
           xhr.setRequestHeader("Content-Type", "application/json");
@@ -54,10 +58,7 @@ setTestsList(JSON.parse(xhr.responseText).tests)
         fontSize:'20pt'
 
     }
-    if(testsLoaded == false){
-    getTestsList(props.token);
-    testsLoaded = true;
-    }
+
 
     function onChoose(test_id){
         props.onChoose(test_id);

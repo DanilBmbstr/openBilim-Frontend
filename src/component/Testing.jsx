@@ -5,7 +5,10 @@ import TestChoise from './TestChoise';
 import TextTask from './tasks/TextTask';
 import SingleChoiseTask from './tasks/SingleChoiseTask';
 import MultiChoiseTask from './tasks/MultiChoiseTask';
+import ResultScreen from './ResultScreen';
 var testsLoaded = false;
+
+
 export default function Testing(props) {
 
     const [task, setTask] = useState(null);
@@ -15,7 +18,7 @@ export default function Testing(props) {
     useEffect(() => {
         getTask();
 
-    }, []); // Пустой массив зависимостей - выполнится только при монтировании
+    }, []); 
 
     function getTask() {
         xhr.open('GET', props.url + '/' + props.sessionId + '/getTask');
@@ -93,6 +96,7 @@ export default function Testing(props) {
     if (task == null) { return <>Загрузка</> }
 
 
+
 if(JSON.parse(task).type == "Text")
 {
     return (
@@ -132,6 +136,17 @@ else if(JSON.parse(task).type == "SingleChoise")
             </div>
 
             <button style={buttonStyle} onClick={sendAnswer}>Далее</button>
+        </div>
+    )}
+        else if(JSON.parse(task).type == "result")
+{
+        return (
+        <div>
+
+
+
+            <ResultScreen  onClick = {props.toMainPage} maxScore = {JSON.parse(task).maxScore} score = {JSON.parse(task).score}></ResultScreen>
+
         </div>
     )};
 
