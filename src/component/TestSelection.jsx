@@ -2,13 +2,14 @@ import Logo from './../assets/Logo.svg'
 import React, { useState } from 'react';
 import TestChoise from './TestChoise';
 import { useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Link, Outlet, useNavigate} from 'react-router-dom';
 var testsLoaded = false;
 export default function TestSelection(props) {
 
 const [login, setLogin] = useState("");
 const [password, setPassword] = useState("");
 const [testsList, setTestsList] = useState([]);
-
+  const navigate = useNavigate();
   const xhr = new XMLHttpRequest();
     useEffect(() => {
         getTestsList(props.token)
@@ -61,7 +62,7 @@ setTestsList(JSON.parse(xhr.responseText).tests)
 
 
     function onChoose(test_id){
-        props.onChoose(test_id);
+        props.onChoose(test_id, navigate);
     }
 
     return (

@@ -7,6 +7,8 @@ import Header from './component/Header'
 import Login from './component/Login'
 import TestSelection from './component/TestSelection'
 import Testing from './component/testing/Testing'
+import { BrowserRouter, Routes, Route, Link, Outlet } from 'react-router-dom';
+
 function App() {
 
 
@@ -22,13 +24,15 @@ function App() {
   const [error, setError] = useState("")
   const [screen, setScreen] = useState("auth")
   const [sessionId, setSessionId] = useState("")
+  
 
 
   const xhr = new XMLHttpRequest();
 
 
 
-  function authorization(log, pas) {
+  function authorization(log, pas, navigate) {
+
     token = "";
     xhr.open('POST', url + '/auth');
     xhr.setRequestHeader("Content-Type", "application/json");
@@ -52,12 +56,12 @@ function App() {
             xhr.setRequestHeader("Content-Type", "application/json");
             xhr.onload = function () {
               if (xhr.status === 200) {
-                if(xhr.responseText != "No unfinished sessions!" && xhr.responseText != "Invalid Token"){
-                setSessionId(JSON.parse(xhr.responseText).session_id);
-                setScreen("test");
-                setTestName(JSON.parse(xhr.responseText).testName);
-                setSubject(JSON.parse(xhr.responseText).subject);
-                return;
+                if (xhr.responseText != "No unfinished sessions!" && xhr.responseText != "Invalid Token") {
+                  setSessionId(JSON.parse(xhr.responseText).session_id);
+                  navigate('/test', { replace: true })
+                  setTestName(JSON.parse(xhr.responseText).testName);
+                  setSubject(JSON.parse(xhr.responseText).subject);
+                  return;
                 }
               }
             }
@@ -65,7 +69,9 @@ function App() {
 
 
             setError("");
-            setScreen("testSelection")
+            
+            navigate('/testSelection', { replace: true })
+       
           }
         }
         xhr.send(token);
@@ -83,7 +89,7 @@ function App() {
 
   }
 
-  function startTest(test_id) {
+  function startTest(test_id, navigate) {
     xhr.open('POST', url + '/startTest');
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onload = function () {
@@ -94,8 +100,8 @@ function App() {
           return;
         }
         setSessionId(JSON.parse(xhr.responseText).session_id);
-        
-        setScreen("test");
+
+        navigate('/test', { replace: true })
         setTestName(JSON.parse(xhr.responseText).testName);
         setSubject(JSON.parse(xhr.responseText).subject);
       }
@@ -109,59 +115,62 @@ function App() {
   }
 
 
-  function toMainPage(){
+  function toMainPage(navigate) {
     setSubject("");
     setTestName("");
     setSessionId("");
-    setScreen("testSelection");
+    navigate("/testSelection")
   }
 
-  if (screen == "auth") {
 
 
-    return (
-      <>
 
-        <Header name={name} group={group} discipline={subject} testName={testName} />
-        <div className="content">
-          <div className="mainPageContent">
-            <Login onClick={authorization}></Login>
-            <br />
-            <h1 className="errorMessage">{error}</h1>
-          </div>
-        </div>
 
-      </>
-    )
-  }
-  else if (screen == "testSelection") {
-    return (
-      <>
 
-        <Header name={name} group={group} discipline={subject} testName={testName} />
-        <div className="content">
-          <div className="mainPageContent">
-            <TestSelection onChoose={startTest} url={url} token={tokenState}></TestSelection>
-            <br />
 
-            <p className="errorMessage">{error}</p>
-          </div>
-        </div>
-
-      </>
-    )
-  }
-
-  else if (screen == "test") {
-    
-    return <>
+  return (
+    <>
       <Header name={name} group={group} discipline={subject} testName={testName} />
+      <BrowserRouter>
+        <Routes>
+
+          <Route path="auth" element={<>
+
+
+            <div className="content">
+              <div className="mainPageContent">
+                <Login onClick={authorization}></Login>
+                <br />
+                <h1 className="errorMessage">{error}</h1>
+              </div>
+            </div>
+
+          </>} />
+          <Route path="testSelection" element={<>
+            <>
+
+
+              <div className="content">
+                <div className="mainPageContent">
+                  <TestSelection onChoose={startTest} url={url} token={tokenState}></TestSelection>
+                  <br />
+
+                  <p className="errorMessage">{error}</p>
+                </div>
+              </div>
+
+            </>
+          </>} />
+
+          <Route path="test" element={<>
+           <>
+     
 
 
 
       <div className="content">
         <div className="mainPageContent">
-          <Testing toMainPage = {toMainPage} sessionId={sessionId} url={url} token={tokenState}></Testing>
+          <Testing restarter = {startTest} toMainPage = {toMainPage} sessionId={sessionId} url={url} token={tokenState}></Testing>
           <br />
 
           <p className="errorMessage">{error}</p>
@@ -169,7 +178,19 @@ function App() {
       </div>
 
     </>
-  }
+          </>} />
+
+        </Routes>
+      </BrowserRouter>
+
+
+
+
+    </>
+  )
+
+
+
 
 }
 

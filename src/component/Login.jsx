@@ -1,11 +1,12 @@
 import Logo from './../assets/Logo.svg'
 import React, { useState } from 'react';
+import { BrowserRouter, Routes, Route, Link, Outlet, useNavigate} from 'react-router-dom';
 
 export default function Login(props) {
 
 const [login, setLogin] = useState("");
 const [password, setPassword] = useState("");
-
+  const navigate = useNavigate();
 const handleEmail = (event) => {
     setLogin(event.target.value);
 
@@ -18,7 +19,7 @@ const handlePassword = (event) => {
 
 
 const handleLoginClick = () => {
-    props.onClick(login, password); // Вызов функции только при клике
+    props.onClick(login, password, navigate); // Вызов функции только при клике
 }
 
     const back = { 
