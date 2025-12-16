@@ -6,7 +6,7 @@ import Component from './component/Component' // Правильный импор
 import Header from './component/Header'
 import Login from './component/Login'
 import TestSelection from './component/TestSelection'
-import Testing from './component/Testing'
+import Testing from './component/testing/Testing'
 function App() {
 
 
