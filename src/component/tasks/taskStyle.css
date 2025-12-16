@@ -1,0 +1,24 @@
+.form {
+    text-align: Left;
+}
+
+.taskText {
+    font-size: 20pt;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+        line-height: 1.4;
+        text-align: left;
+        width: 100%;
+}
+
+
+    textarea {
+        resize: none;
+        width: 70%;
+
+        height: 600px;
+        border-radius: 0.5%;
+        font-size: 20pt;
+        font-family: 'MainFont', sans-serif
+    }

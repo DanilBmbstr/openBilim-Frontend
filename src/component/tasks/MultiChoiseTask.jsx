@@ -31,26 +31,14 @@ function getDataReady(){
     props.onSelect(chosedOptions.join(","));
 }
 
-    const formStyle ={
-textAlign: "Left"
-    }
 
-        const textStyle = {
-        fontSize: "20pt",
-    wordWrap: 'break-word',
-    overflowWrap: 'break-word',
-    hyphens: 'auto', // Автоматические переносы (работает не во всех браузерах)
-    lineHeight: '1.4', // Увеличиваем межстрочный интервал для читаемости
-    textAlign: 'left',
-    width: '100%',
-    }
 
     return <>
     
 
-    <p style={textStyle}>{props.taskText}</p>
+    <p className="taskText">{props.taskText}</p>
 
-<form style={formStyle} >
+<form className="form" >
 
 
 {props.options.map((option) => { return < MultiChoiseOption onChecked={handleCheck} key={option} type="checkbox" option={option}></MultiChoiseOption>})}
